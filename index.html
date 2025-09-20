@@ -79,6 +79,13 @@
             if ((val.startsWith("'") && val.endsWith("'")) || (val.startsWith('"') && val.endsWith('"'))){ 
                 val = val.slice(1, -1); 
             }
+
+            if (val.toLowerCase() === 'true') return 1;
+            if (val.toLowerCase() === 'false') return 0;
+
+            if (val.toLowerCase() === 'null') return null;
+            if (val.toLowerCase() === 'undefined') return undefined;
+
             return val;
         }
 
