@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <title>Document</title>
+</head>
+<body class="container py-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Сравнение значений</h5>
+        </div>
+        <div class="card-body">
+            <p>Введите два значения</p>
+            <div class="row mb-3">
+                <div class="col-md-5">
+                    <input type="text" class="form-control" placeholder="Первое значение" id="v1">
+                </div>
+                <div class="col-md-2 text-center align-self-center"><p class="mb-0">и</p></div>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" placeholder="Второе значение" id="v2">
+                </div>
+            </div>
+            <div class="text-center mb-3">
+                <button class="btn btn-primary" onclick="compareValues()">Сравнить</button>
+            </div>
+            <div class="alert alert-light text-center" id="result">
+                <p class="mb-0">Результаты сравнения появятся здесь</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        'use strict'
+        
+        function compareValues(){
+            const v1 = document.getElementById('v1').value.trim();
+            const v2 = document.getElementById('v2').value.trim();
+            const result = document.getElementById('result');
+
+            if (v1 !== '' && v2 !== ''){
+                const ch1 = check(v1);
+                const ch2 = check(v2);
+
+                const nsC  = ch1 == ch2;
+                const sC = convert(v1, v2) === convert(v2, v1);
+                const numC = Number(ch1) > Number(ch2);
+                const strC = ch1 > ch2;
+
+                result.innerHTML = `
+                    <p class="text-start"><strong>Нестрогое сравнение (${v1} == ${v2}):</strong> ${nsC}</p>
+                    <p class="text-start"><strong>Строгое сравнение (${v1} === ${v2}):</strong> ${sC}</p>
+                    <p class="text-start"><strong>Сравнение чисел (Number(${v1}) > Number(${v2})): </strong> ${numC}</p>
+                    <p class="text-start"><strong>Сравнение строк(${v1} > ${v2}):</strong> ${strC}</p>
+                `;
+            }
+            else {
+                result.innerHTML = `<p class="mb-0">Пожалуйста, введите оба значения!</p>`;
+            }
+        }
+
+        function convert(val1, val2) {
+            const val1Single = val1.startsWith("'") && val1.endsWith("'");
+            const val1Double = val1.startsWith('"') && val1.endsWith('"');
+
+            const val2Single = val2.startsWith("'") && val2.endsWith("'");
+            const val2Double = val2.startsWith('"') && val2.endsWith('"');
+
+            if ((val1Single && val2Double) || (val1Double && val2Single)) {
+                val1 = `'${val1.slice(1, -1)}'`;
+                val2 = `'${val2.slice(1, -1)}'`;
+            }
+
+            return val1;
+        }
+
+        function check(val){
+            if ((val.startsWith("'") && val.endsWith("'")) || (val.startsWith('"') && val.endsWith('"'))){ 
+                val = val.slice(1, -1); 
+            }
+            return val;
+        }
+
+
+
+    </script>    
+</body>
+</html>
